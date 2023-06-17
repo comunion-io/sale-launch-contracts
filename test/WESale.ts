@@ -31,6 +31,9 @@ describe('WESaleFactory', function () {
       owner.address
     )
     await wesaleFactory.grantRole(dexRouterSetterBytes, routerSetter.address)
+    await wesaleFactory
+      .connect(routerSetter)
+      .grantRole(dexRouterBytes, dexRouter)
     return {
       wesaleFactory,
       owner,
@@ -44,22 +47,25 @@ describe('WESaleFactory', function () {
   }
   async function deployTestTokenFixture() {
     const TestERC20 = await ethers.getContractFactory('TestERC20')
-    const tokenA = await TestERC20.deploy(
+    const invetTokenA = await TestERC20.deploy(
       'Test Coin A',
       'TCA',
+      18,
       ethers.BigNumber.from(2).pow(255)
     )
-    const tokenB = await TestERC20.deploy(
+    const invetTokenB = await TestERC20.deploy(
       'Test Coin B',
       'TCB',
+      8,
       ethers.BigNumber.from(2).pow(255)
     )
-    const tokenC = await TestERC20.deploy(
+    const presaleToken = await TestERC20.deploy(
       'Test Coin C',
       'TCC',
+      6,
       ethers.BigNumber.from(2).pow(255)
     )
-    return { tokenA, tokenB, tokenC }
+    return { invetTokenA, invetTokenB, presaleToken }
   }
   async function create5SWESaleFixture() {
     const {
@@ -72,9 +78,15 @@ describe('WESaleFactory', function () {
       investor1,
       investor2,
     } = await loadFixture(deployWESaleFactoryFixture)
-    const { tokenA, tokenB, tokenC } = await loadFixture(deployTestTokenFixture)
+    const { invetTokenA, invetTokenB, presaleToken } = await loadFixture(
+      deployTestTokenFixture
+    )
+    await presaleToken.transfer(
+      founder.address,
+      ethers.utils.parseEther('21000000')
+    )
     const startedAt = await time.latest()
-    const endedAt = startedAt + 3
+    const endedAt = startedAt + 30
     const parameters: ParametersStruct = {
       price: ethers.BigNumber.from(1),
       liquidityRate: ethers.BigNumber.from(1),

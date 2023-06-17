@@ -2,7 +2,7 @@
 pragma solidity ^0.8.9;
 
 // import "hardhat/console.sol";
-import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/utils/math/Math.sol";
@@ -12,7 +12,7 @@ import "./Error.sol";
 import "./WESale.sol";
 
 contract WESaleFactory is Ownable, AccessControl {
-    using SafeMath for uint256;
+    using SafeMath for uint;
 
     bytes32 private constant ADMIN_ROLE = keccak256("ADMIN_ROLE");
     bytes32 private constant DEX_ROUTER_SETTER_ROLE =
@@ -51,19 +51,27 @@ contract WESaleFactory is Ownable, AccessControl {
         if (_parameters.hardCap <= 0) {
             revert InvalidNumber("HC", _parameters.hardCap);
         }
+        if (!hasRole(DEX_ROUTER, _parameters.router)) {
+            revert UnsupportedDexRouter();
+        }
+        IERC20Metadata presaleToken = IERC20Metadata(_presaleToken);
+        IERC20Metadata investToken = IERC20Metadata(_investToken);
+        // investToken.
         // //  TODO SafeMath
         uint256 needDepositAmount;
         {
-            needDepositAmount = _parameters.hardCap.mul(_parameters.price);
+            needDepositAmount = _parameters.hardCap.mul(_parameters.price).div(
+                investToken.decimals()
+            );
             needDepositAmount = _parameters
                 .hardCap
                 .mul(_parameters.dexInitPrice)
                 .mul(_parameters.liquidityRate)
                 .div(1000000)
+                .div(investToken.decimals())
                 .add(needDepositAmount);
         }
 
-        IERC20 presaleToken = IERC20(_presaleToken);
         if (
             presaleToken.allowance(_msgSender(), address(this)) <
             needDepositAmount

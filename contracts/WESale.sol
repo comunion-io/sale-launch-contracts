@@ -3,14 +3,14 @@ pragma solidity ^0.8.9;
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@openzeppelin/contracts/utils/Context.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol";
 import "@openzeppelin/contracts/utils/cryptography/draft-EIP712.sol";
 import "./Error.sol";
 import "./interfaces/IWESaleFactory.sol";
 
 struct Parameters {
     uint256 price;
-    uint256 liquidityRate;
+    uint24 liquidityRate;
     uint256 minInvest;
     uint256 maxInvest;
     uint256 softCap;
@@ -19,13 +19,13 @@ struct Parameters {
     uint256 dexInitPrice;
     uint256 startedAt;
     uint256 endedAt;
-    uint256 firstRelease;
-    uint256 cycle;
-    uint256 cycleRelease;
+    uint24 firstRelease;
+    uint24 cycle;
+    uint24 cycleRelease;
 }
 
 contract WESale is Ownable, EIP712 {
-    using SafeMath for uint256;
+    using SafeMath for uint;
     // uint256 private presaleReserve;
     // uint256 private investReserve;
     string public name;
@@ -81,8 +81,13 @@ contract WESale is Ownable, EIP712 {
         (, uint256 investAmount) = getAmount(presaleAmount, 0);
         if (parameters.hardCap == totalInvest) {}
         // (, uint256 _investReserve ) = getReserves();
-        uint256 allowInvestAmount = parameters.hardCap.mul(totalInvest);
-        if (allowInvestAmount < presaleAmount) {
+        IERC20Metadata _presaleToken = IERC20Metadata(presaleToken);
+
+        uint256 allowInvestAmount = parameters
+            .hardCap
+            .mul(parameters.price)
+            .div(10 ** _presaleToken.decimals());
+        if (allowInvestAmount < investAmount.add(totalInvest)) {
             revert InvalidNumber("AIA", investAmount);
         }
         if (_isNative()) {
@@ -279,9 +284,15 @@ contract WESale is Ownable, EIP712 {
         uint256 investAmount
     ) public view returns (uint256 _presaleAmount, uint256 _investAmount) {
         if (presaleAmount > 0) {
-            investAmount = presaleAmount.mul(parameters.price);
+            IERC20Metadata _presaleToken = IERC20Metadata(presaleToken);
+            investAmount = presaleAmount.mul(parameters.price).div(
+                10 ** _presaleToken.decimals()
+            );
         } else {
-            presaleAmount = investAmount.div(parameters.price);
+            IERC20Metadata _presaleToken = IERC20Metadata(presaleToken);
+            presaleAmount = investAmount
+                .mul(10 ** _presaleToken.decimals())
+                .div(parameters.price);
         }
         return (presaleAmount, investAmount);
     }

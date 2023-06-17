@@ -8,6 +8,7 @@ error InsufficientAllowedPresaleAmount();
 error InsufficientPresaleBalance();
 error InsufficientAllowedInvestAmount();
 error InsufficientInvestBalance();
+error UnsupportedDexRouter();
 
 error InvestmentClosed();
 error InvestmentIsNotClosed();

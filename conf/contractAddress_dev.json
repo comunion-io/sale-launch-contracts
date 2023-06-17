@@ -1,0 +1,18 @@
+[
+  {
+    "name": "WESaleFactory",
+    "abiUrl": "/artifacts/contracts/WESaleFactory.sol/WESaleFactory.json",
+    "addresses": [
+      {
+        "chainId": 57000,
+        "chainName": "Rollux Testnet",
+        "address": "0xc54Da98f20A2F8903C694f499BB416539d913783"
+      }
+    ]
+  },
+  {
+    "name": "WESale",
+    "abiUrl": "/artifacts/contracts/WESale.sol/WESale.json",
+    "addresses": []
+  }
+]
