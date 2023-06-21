@@ -9,3 +9,4 @@ typechain-types
 cache
 artifacts/@openzeppelin
 artifacts/build-info
+artifacts/hardhat

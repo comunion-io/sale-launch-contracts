@@ -19,9 +19,9 @@ const config: HardhatUserConfig = {
   networks: {
     hardhat: {
       //   allowUnlimitedContractSize: true,
-      //   forking: {
-      //     url: 'https://rpc.ankr.com/eth',
-      //   },
+      forking: {
+        url: 'https://rpc-tanenbaum.rollux.com',
+      },
     },
     localhost: {
       url: 'http://127.0.0.1:8545',

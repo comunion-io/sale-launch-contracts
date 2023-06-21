@@ -1,4 +1,5 @@
 import { ethers } from 'hardhat'
+import { ParametersStruct } from '../typechain-types/contracts/WESaleFactory'
 
 async function main() {
   // avax uniswap v2 router
@@ -16,11 +17,13 @@ async function main() {
   console.log(`WESale deployed to ${wesaleFactory.address}`)
   const dexRouterBytes = ethers.utils.id('DEX_ROUTER')
   const dexRouterSetterBytes = ethers.utils.id('DEX_ROUTER_SETTER_ROLE')
-  wesaleFactory
-    .grantRole(dexRouterSetterBytes, owner.address)
-    .then(async () => {
-      await wesaleFactory.grantRole(dexRouterBytes, routerAddress)
-    })
+  await wesaleFactory.grantRole(dexRouterSetterBytes, owner.address)
+  await sleep(3000)
+  await wesaleFactory.grantRole(dexRouterBytes, routerAddress)
+}
+
+function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
 // We recommend this pattern to be able to use async/await everywhere
