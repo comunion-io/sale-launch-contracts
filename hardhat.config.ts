@@ -9,6 +9,7 @@ const config: HardhatUserConfig = {
         enabled: true,
         runs: 200,
       },
+      //   viaIR: true,
     },
   },
   gasReporter: {
@@ -16,49 +17,29 @@ const config: HardhatUserConfig = {
   },
 
   networks: {
-    // hardhat: {
-    //   allowUnlimitedContractSize: true,
-    //   forking: {
-    //     url: 'https://rpc.ankr.com/eth',
-    //   },
-    // },
+    hardhat: {
+      //   allowUnlimitedContractSize: true,
+      //   forking: {
+      //     url: 'https://rpc.ankr.com/eth',
+      //   },
+    },
     localhost: {
       url: 'http://127.0.0.1:8545',
     },
     goerli: {
       url: 'https://rpc.ankr.com/eth_goerli',
-      accounts: [
-        // 0xc71
-        '73db539d43d10f1447bf11fe006fb0b532a8978d12b0e69749d2e9bc4b11b2dd',
-      ],
     },
     avaxtestnet: {
       url: 'https://api.avax-test.network/ext/bc/C/rpc',
-      accounts: [
-        // 0xc71
-        '73db539d43d10f1447bf11fe006fb0b532a8978d12b0e69749d2e9bc4b11b2dd',
-      ],
     },
     rolluxtestnet: {
       url: 'https://rpc-tanenbaum.rollux.com',
-      accounts: [
-        // 0xc71
-        '73db539d43d10f1447bf11fe006fb0b532a8978d12b0e69749d2e9bc4b11b2dd',
-      ],
     },
     syscointestnet: {
       url: 'https://rpc.tanenbaum.io/',
-      accounts: [
-        // 0xc71
-        '73db539d43d10f1447bf11fe006fb0b532a8978d12b0e69749d2e9bc4b11b2dd',
-      ],
     },
     syscoin: {
       url: 'https://rpc.syscoin.org',
-      accounts: [
-        // 0xc71
-        '73db539d43d10f1447bf11fe006fb0b532a8978d12b0e69749d2e9bc4b11b2dd',
-      ],
     },
   },
 }
