@@ -1,8 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.9;
 
-// import "hardhat/console.sol";
-import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/utils/math/Math.sol";
@@ -10,9 +9,20 @@ import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "./interfaces/IWESale.sol";
 import "./Error.sol";
 import "./WESale.sol";
+import "hardhat/console.sol";
 
 contract WESaleFactory is Ownable, AccessControl {
-    using SafeMath for uint256;
+    using SafeMath for uint;
+
+    event WESaleCreated(
+        address _creator,
+        address _wesale,
+        address _presaleToken,
+        address _investToken,
+        address _teamWallet,
+        uint256 _amount,
+        Parameters parameters
+    );
 
     bytes32 private constant ADMIN_ROLE = keccak256("ADMIN_ROLE");
     bytes32 private constant DEX_ROUTER_SETTER_ROLE =
@@ -40,7 +50,7 @@ contract WESaleFactory is Ownable, AccessControl {
         address _teamWallet,
         address _presaleToken,
         address _investToken,
-        Parameters calldata _parameters
+        Parameters memory _parameters
     ) external payable returns (address wesale) {
         if (_presaleToken == address(0)) {
             revert InvalidToken("ZA");
@@ -51,19 +61,30 @@ contract WESaleFactory is Ownable, AccessControl {
         if (_parameters.hardCap <= 0) {
             revert InvalidNumber("HC", _parameters.hardCap);
         }
-        // //  TODO SafeMath
+        if (!hasRole(DEX_ROUTER, _parameters.router)) {
+            revert UnsupportedDexRouter();
+        }
+        IERC20 presaleToken = IERC20(_presaleToken);
+        if (_investToken == address(0)) {
+            _parameters.investTokenDecimals = 18;
+        } else {
+            IERC20Metadata investToken = IERC20Metadata(_investToken);
+            _parameters.investTokenDecimals = investToken.decimals();
+        }
+        // investToken.
         uint256 needDepositAmount;
         {
-            needDepositAmount = _parameters.hardCap.mul(_parameters.price);
+            needDepositAmount = _parameters.hardCap.mul(_parameters.price).div(
+                10 ** _parameters.investTokenDecimals
+            );
             needDepositAmount = _parameters
                 .hardCap
                 .mul(_parameters.dexInitPrice)
                 .mul(_parameters.liquidityRate)
                 .div(1000000)
+                .div(10 ** _parameters.investTokenDecimals)
                 .add(needDepositAmount);
         }
-
-        IERC20 presaleToken = IERC20(_presaleToken);
         if (
             presaleToken.allowance(_msgSender(), address(this)) <
             needDepositAmount
@@ -79,16 +100,31 @@ contract WESaleFactory is Ownable, AccessControl {
                 _teamWallet,
                 _presaleToken,
                 _investToken,
-                needDepositAmount
+                needDepositAmount,
+                _parameters
             )
         );
 
         if (
-            presaleToken.transferFrom(_msgSender(), wesale, needDepositAmount)
+            !presaleToken.transferFrom(
+                _msgSender(),
+                address(this),
+                needDepositAmount
+            )
         ) {
             revert InsufficientPresaleBalance();
         }
+        presaleToken.transfer(wesale, needDepositAmount);
         _grantRole(WESALES, wesale);
+        emit WESaleCreated(
+            _msgSender(),
+            wesale,
+            _presaleToken,
+            _investToken,
+            _teamWallet,
+            needDepositAmount,
+            _parameters
+        );
     }
 
     function setFeeTo(address _feeTo) external onlyRole(ADMIN_ROLE) {
