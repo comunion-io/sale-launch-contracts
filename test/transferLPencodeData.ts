@@ -23,6 +23,15 @@ describe('TransferLPData', function () {
       teamWallet,
       deadline,
     ])
+
+    // const wesale = await ethers.getContractAt(
+    //   'WESale',
+    //   '0x0e597Fa7b8283726d3ccf01dcfCa01D3b3802Bc8'
+    // )
+
+    // const eip = await wesale.eip712Domain()
+    // console.log(eip)
+
     console.log('LPData: ', data)
     const message = {
       domain: {
@@ -41,7 +50,8 @@ describe('TransferLPData', function () {
       data: {
         _router: routerAddress,
         _amountA: amountA,
-        _data: data,
+        _data:
+          '0x3c7356d50000000000000000000000004c7ac2e4ac328bb5162cbb45cc6beac910f4d37a000000000000000000000000000000000000000000000000bc75da0cd1ce000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000a4091e09eb027f1e5d397659bfc7d73cdddca2760000000000000000000000000000000000000000000000000000000064956cb1',
       },
     }
     const sign = await signer._signTypedData(
