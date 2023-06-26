@@ -8,6 +8,7 @@ async function main() {
 
   // feeTod
   const feeTo = '0xa6771e585E91C6ce7D1EeB578EDbe0696d37d962'
+  const signer = '0x39AD2809F73086A63Ab2F0D8D689D1cc02579abA'
   const [owner, founder] = await ethers.getSigners()
 
   const presaleToken = await ethers.getContractAt(
@@ -19,7 +20,7 @@ async function main() {
   )
 
   const WESaleFactory = await ethers.getContractFactory('WESaleFactory')
-  const wesaleFactory = await WESaleFactory.deploy(feeTo, owner.address)
+  const wesaleFactory = await WESaleFactory.deploy(feeTo, signer)
   await wesaleFactory.deployed()
 
   console.log(`WESale deployed to ${wesaleFactory.address}`)

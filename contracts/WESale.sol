@@ -32,7 +32,7 @@ contract WESale is Ownable, EIP712 {
     uint256 public unlockedAt;
     uint256 public totalInvest;
     uint256 public totalPresale;
-    bool public isCancel = false;
+    bool internal isCancel = false;
 
     uint24 public constant FEE = 30000;
     uint24 public constant URGENT_DIVEST_FEE = 100000;
@@ -107,7 +107,10 @@ contract WESale is Ownable, EIP712 {
         if (investAmount < parameters.minInvest) {
             revert LTMinimumInvestment();
         }
-        if (investAmount > parameters.maxInvest) {
+        uint256 _senderTotalInvest = investBalances[_msgSender()].add(
+            investAmount
+        );
+        if (_senderTotalInvest > parameters.maxInvest) {
             revert GTMaximumInvestment();
         }
 
@@ -138,12 +141,12 @@ contract WESale is Ownable, EIP712 {
     }
 
     function divest() external lock {
-        if (!_isEnded()) {
-            _urgentDivest();
+        if (_isFailed() || _isCancel()) {
+            _divest();
             return;
         }
-        if ((_isEnded() && totalInvest < parameters.softCap) || isCancel) {
-            _divest();
+        if (!_isEnded()) {
+            _urgentDivest();
             return;
         }
         revert DidNotMeetDivestmentRequirements();
@@ -300,7 +303,7 @@ contract WESale is Ownable, EIP712 {
         if (unlockedAt != 0) {
             revert SaleCompleted();
         }
-        if (isCancel) {
+        if (_isCancel()) {
             revert HasBeenCanceled();
         }
         isCancel = true;
@@ -457,6 +460,10 @@ contract WESale is Ownable, EIP712 {
         bytes calldata _signature
     ) internal pure returns (bool) {
         return ECDSA.recover(_hash, _signature) == _signer;
+    }
+
+    function _isCancel() public view returns (bool) {
+        return isCancel;
     }
 
     function _isLive() public view returns (bool) {
