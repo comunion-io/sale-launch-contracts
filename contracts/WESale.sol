@@ -169,6 +169,10 @@ contract WESale is Ownable, EIP712 {
             revert NotAnAutoListingLaunchPad();
         }
 
+        if (unlockedAt != 0) {
+            revert SaleCompleted();
+        }
+
         if (!_isEnded() || (_isEnded() && totalInvest < parameters.softCap)) {
             revert PresaleNotCompleted();
         }
@@ -261,8 +265,11 @@ contract WESale is Ownable, EIP712 {
         if (_isFailed()) {
             revert ClaimInvestError();
         }
-        if (!_isEnded() || totalInvest != parameters.hardCap) {
+        if (!_isEnded() || totalInvest < parameters.softCap) {
             revert InvestmentIsNotClosed();
+        }
+        if (unlockedAt != 0) {
+            revert SaleCompleted();
         }
         IWESaleFactory _factory = IWESaleFactory(factory);
         address feeTo = _factory.feeTo();
@@ -270,10 +277,21 @@ contract WESale is Ownable, EIP712 {
         uint256 investAmount = totalInvest.sub(fee);
         _claimInvestAmount(feeTo, fee);
         _claimInvestAmount(teamWallet, investAmount);
+        unlockedAt = block.timestamp;
         emit ClaimInvest(teamWallet, investAmount, block.timestamp);
     }
 
     function claimPresale() external lock {
+        // uint256 share = _balance.div(totalInvest);
+        (uint256 canClaim, uint256 canClaimTotal) = getCanClaimTotal();
+        if (canClaim > 0) {
+            claimed[_msgSender()] = canClaimTotal;
+            _claimPresaleAmount(_msgSender(), canClaim);
+            emit ClaimPresale(_msgSender(), canClaim, block.timestamp);
+        }
+    }
+
+    function getCanClaimTotal() public view returns (uint256, uint256) {
         uint256 _balance = investBalances[_msgSender()];
         if (_balance == 0) {
             revert InsufficientInvestBalance();
@@ -288,15 +306,17 @@ contract WESale is Ownable, EIP712 {
             .mul(_balance)
             .div(totalInvest)
             .div(1000000);
+
+        uint256 canClaim = 0;
         if (canClaimTotal > 0) {
-            uint256 _claimed = claimed[_msgSender()];
-            uint256 canClaim = canClaimTotal.sub(_claimed);
-            if (canClaim > 0) {
-                claimed[_msgSender()] = canClaimTotal;
-                _claimPresaleAmount(_msgSender(), canClaim);
-                emit ClaimPresale(_msgSender(), canClaim, block.timestamp);
-            }
+            uint256 _claimed = getClaimedTotal();
+            canClaim = canClaimTotal.sub(_claimed);
         }
+        return (canClaimTotal, canClaim);
+    }
+
+    function getClaimedTotal() public view returns (uint256) {
+        return claimed[_msgSender()];
     }
 
     function cancel() external lock {
@@ -309,6 +329,7 @@ contract WESale is Ownable, EIP712 {
         isCancel = true;
         _claimPresaleAmount(_msgSender(), totalPresale);
         emit CancelFounderReturn(_msgSender(), totalPresale, block.timestamp);
+        emit Cancel(block.timestamp);
     }
 
     function getTotalReleased() public view returns (uint256) {
@@ -397,9 +418,10 @@ contract WESale is Ownable, EIP712 {
         }
         _balance = _balance.mul(URGENT_DIVEST_FEE).div(1000000);
         investBalances[_msgSender()] = 0;
-        totalInvest = totalInvest.sub(_balance);
-        _claimInvestAmount(_msgSender(), _balance);
-        emit ParticipantDivest(_msgSender(), _balance, block.timestamp);
+        uint256 returnInvest = totalInvest.sub(_balance);
+        totalInvest = _balance;
+        _claimInvestAmount(_msgSender(), returnInvest);
+        emit ParticipantDivest(_msgSender(), returnInvest, block.timestamp);
     }
 
     function _founderDivest() internal {

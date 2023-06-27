@@ -5,6 +5,104 @@ import { ethers } from 'hardhat'
 
 describe('TransferLPData', function () {
   it('Should can setting new fee to', async function () {
+    console.log(
+      'InvalidToken(string _origin): ',
+      ethers.utils.id('InvalidToken(string)')
+    )
+    console.log(
+      'InvalidNumber(string _origin, uint256 _num): ',
+      ethers.utils.id('InvalidNumber(string,uint256)')
+    )
+
+    console.log(
+      'InsufficientAllowedPresaleAmount(): ',
+      ethers.utils.id('InsufficientAllowedPresaleAmount()')
+    )
+    console.log(
+      'InsufficientPresaleBalance(): ',
+      ethers.utils.id('InsufficientPresaleBalance()')
+    )
+    console.log(
+      'InsufficientAllowedInvestAmount(): ',
+      ethers.utils.id('InsufficientAllowedInvestAmount()')
+    )
+    console.log(
+      'InsufficientInvestBalance(): ',
+      ethers.utils.id('InsufficientInvestBalance()')
+    )
+    console.log(
+      'UnsupportedDexRouter(): ',
+      ethers.utils.id('UnsupportedDexRouter()')
+    )
+
+    console.log(
+      'LTMinimumInvestment(): ',
+      ethers.utils.id('LTMinimumInvestment()')
+    )
+    console.log(
+      'GTMaximumInvestment(): ',
+      ethers.utils.id('GTMaximumInvestment()')
+    )
+    console.log('InvestmentClosed(): ', ethers.utils.id('InvestmentClosed()'))
+    console.log(
+      'InvestmentIsNotClosed(): ',
+      ethers.utils.id('InvestmentIsNotClosed()')
+    )
+    console.log(
+      'DidNotMeetDivestmentRequirements(): ',
+      ethers.utils.id('DidNotMeetDivestmentRequirements()')
+    )
+
+    console.log('SaleCompleted(): ', ethers.utils.id('SaleCompleted()'))
+    console.log('HasBeenCanceled(): ', ethers.utils.id('HasBeenCanceled()'))
+    console.log('IllegalOperation(): ', ethers.utils.id('IllegalOperation()'))
+    console.log('Locked(): ', ethers.utils.id('Locked()'))
+
+    console.log('ClaimInvestError(): ', ethers.utils.id('ClaimInvestError()'))
+    console.log('ClaimPresaleError(): ', ethers.utils.id('ClaimPresaleError()'))
+
+    console.log(
+      'NotAnAutoListingLaunchPad(): ',
+      ethers.utils.id('NotAnAutoListingLaunchPad()')
+    )
+    console.log(
+      'IsAnAutoListingLaunchPad(): ',
+      ethers.utils.id('IsAnAutoListingLaunchPad()')
+    )
+    console.log(
+      'PresaleNotCompleted(): ',
+      ethers.utils.id('PresaleNotCompleted()')
+    )
+    console.log(
+      'TransferAllowedPresaleAmount(): ',
+      ethers.utils.id('TransferAllowedPresaleAmount()')
+    )
+    console.log(
+      'TransferPresaleBalanc(): ',
+      ethers.utils.id('TransferPresaleBalanc()')
+    )
+    console.log(
+      'TransferAllowedInvestAmount(): ',
+      ethers.utils.id('TransferAllowedInvestAmount()')
+    )
+    console.log(
+      'TransferInvestBalance(): ',
+      ethers.utils.id('TransferInvestBalance()')
+    )
+    console.log(
+      'TransferLiquidityFailed(): ',
+      ethers.utils.id('TransferLiquidityFailed()')
+    )
+    console.log(
+      'TransferLiquiditySignatureVerificationFailed(): ',
+      ethers.utils.id('TransferLiquiditySignatureVerificationFailed()')
+    )
+
+    const dexRouterBytes = ethers.utils.id('DEX_ROUTER')
+    const dexRouterSetterBytes = ethers.utils.id('DEX_ROUTER_SETTER_ROLE')
+
+    console.log('dexRouterBytes: ', dexRouterBytes)
+    console.log('dexRouterSetterBytes: ', dexRouterSetterBytes)
     const signer = await ethers.getSigner(
       '0xc71aABBC653C7Bd01B68C35B8f78F82A21014471'
     )

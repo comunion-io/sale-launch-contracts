@@ -5,9 +5,10 @@ async function main() {
   // avax uniswap v2 router
   // const routerAddress = '0x52B2031Ea4232b68b88e1577206dc388EFcE2E49'
   const routerAddress = '0x29f7Ad37EC018a9eA97D4b3fEebc573b5635fA84'
+  const routerZeroAddress = '0x0000000000000000000000000000000000000000'
 
   // feeTod
-  const feeTo = '0xa6771e585E91C6ce7D1EeB578EDbe0696d37d962'
+  const feeTo = '0x2BEB019cF2F18824c54898308D787aD5d8f2e2Db'
   const signer = '0x39AD2809F73086A63Ab2F0D8D689D1cc02579abA'
   const [owner, founder] = await ethers.getSigners()
 
@@ -33,6 +34,7 @@ async function main() {
   )
   await sleep(5000)
   await wesaleFactory.grantRole(dexRouterBytes, routerAddress)
+  await wesaleFactory.grantRole(dexRouterBytes, routerZeroAddress)
   console.log(
     'complete grant router role to routerAddress: dexRouterBytes: ',
     dexRouterBytes
