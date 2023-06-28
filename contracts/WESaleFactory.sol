@@ -9,7 +9,8 @@ import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "./interfaces/IWESale.sol";
 import "./Error.sol";
 import "./WESale.sol";
-import "hardhat/console.sol";
+
+// import "hardhat/console.sol";
 
 contract WESaleFactory is Ownable, AccessControl {
     using SafeMath for uint;
