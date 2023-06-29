@@ -301,12 +301,18 @@ contract WESale is Ownable, EIP712 {
         // emit ClaimInvest(teamWallet, investAmount, block.timestamp);
     }
 
+    // function test() external {
+    //     // investBalances[_msgSender()] = 100_000_000_000_000_000;
+    //     // totalInvest = 100_000_000_000_000_000;
+    //     unlockedAt = block.timestamp;
+    // }
+
     function claimPresale() external lock {
         if (_isFailed() || unlockedAt == 0) {
             revert PresaleNotCompleted();
         }
         // uint256 share = _balance.div(totalInvest);
-        (uint256 canClaim, uint256 canClaimTotal) = getCanClaimTotal();
+        (uint256 canClaimTotal, uint256 canClaim) = getCanClaimTotal();
         if (canClaim > 0) {
             claimed[_msgSender()] = canClaimTotal;
             _claimPresaleAmount(_msgSender(), canClaim);
@@ -351,8 +357,8 @@ contract WESale is Ownable, EIP712 {
         }
         isCancel = true;
         _claimPresaleAmount(_msgSender(), totalPresale);
-        emit CancelFounderReturn(_msgSender(), totalPresale, block.timestamp);
         emit Cancel(block.timestamp);
+        emit CancelFounderReturn(_msgSender(), totalPresale, block.timestamp);
     }
 
     function getTotalReleased() public view returns (uint256) {
@@ -429,9 +435,11 @@ contract WESale is Ownable, EIP712 {
             revert InsufficientInvestBalance();
         }
         investBalances[_msgSender()] = 0;
-        totalInvest = totalInvest.sub(_balance);
         _claimInvestAmount(_msgSender(), _balance);
-        emit ParticipantDivest(_msgSender(), _balance, block.timestamp);
+        if (!_isCancel()) {
+            totalInvest = totalInvest.sub(_balance);
+            emit ParticipantDivest(_msgSender(), _balance, block.timestamp);
+        }
     }
 
     function _urgentDivest() internal {
