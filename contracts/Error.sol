@@ -33,3 +33,5 @@ error TransferAllowedInvestAmount();
 error TransferInvestBalance();
 error TransferLiquidityFailed();
 error TransferLiquiditySignatureVerificationFailed();
+
+error EditingIsCurrentlyNotAllowed();

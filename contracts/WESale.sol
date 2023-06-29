@@ -33,6 +33,7 @@ contract WESale is Ownable, EIP712 {
     uint256 public totalInvest;
     uint256 public totalPresale;
     bool internal isCancel = false;
+    bool internal canUpdate = true;
 
     uint24 public constant FEE = 30000;
     uint24 public constant URGENT_DIVEST_FEE = 100000;
@@ -68,6 +69,7 @@ contract WESale is Ownable, EIP712 {
         uint256 _amountB,
         uint256 _timestamp
     );
+    event UpdateEndedAt(uint256 _timestamp);
 
     uint private unlocked = 0;
 
@@ -97,6 +99,15 @@ contract WESale is Ownable, EIP712 {
         investToken = _investToken;
         totalPresale = _deposit;
         parameters = _parameters;
+    }
+
+    function updateEndedAt(uint256 _endedAt) external onlyOwner {
+        if (_isEnded() || !_canUpdate()) {
+            revert EditingIsCurrentlyNotAllowed();
+        }
+        parameters.endedAt = _endedAt;
+        canUpdate = false;
+        emit UpdateEndedAt(_endedAt);
     }
 
     function invest(uint256 investAmount) external payable lock {
@@ -506,5 +517,9 @@ contract WESale is Ownable, EIP712 {
 
     function _isFailed() public view returns (bool) {
         return _isEnded() && totalInvest < parameters.softCap;
+    }
+
+    function _canUpdate() public view returns (bool) {
+        return canUpdate;
     }
 }
