@@ -9,7 +9,8 @@ import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "./interfaces/IWESale.sol";
 import "./Error.sol";
 import "./WESale.sol";
-import "hardhat/console.sol";
+
+// import "hardhat/console.sol";
 
 contract WESaleFactory is Ownable, AccessControl {
     using SafeMath for uint;
@@ -33,7 +34,7 @@ contract WESaleFactory is Ownable, AccessControl {
     address public transferSigner;
 
     string private name = "WESale";
-    string private version = "0.0.1";
+    string private version = "1.0";
 
     constructor(address _feeTo, address _transferSigner) {
         feeTo = _feeTo;

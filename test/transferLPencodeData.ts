@@ -5,6 +5,104 @@ import { ethers } from 'hardhat'
 
 describe('TransferLPData', function () {
   it('Should can setting new fee to', async function () {
+    console.log(
+      'InvalidToken(string _origin): ',
+      ethers.utils.id('InvalidToken(string)')
+    )
+    console.log(
+      'InvalidNumber(string _origin, uint256 _num): ',
+      ethers.utils.id('InvalidNumber(string,uint256)')
+    )
+
+    console.log(
+      'InsufficientAllowedPresaleAmount(): ',
+      ethers.utils.id('InsufficientAllowedPresaleAmount()')
+    )
+    console.log(
+      'InsufficientPresaleBalance(): ',
+      ethers.utils.id('InsufficientPresaleBalance()')
+    )
+    console.log(
+      'InsufficientAllowedInvestAmount(): ',
+      ethers.utils.id('InsufficientAllowedInvestAmount()')
+    )
+    console.log(
+      'InsufficientInvestBalance(): ',
+      ethers.utils.id('InsufficientInvestBalance()')
+    )
+    console.log(
+      'UnsupportedDexRouter(): ',
+      ethers.utils.id('UnsupportedDexRouter()')
+    )
+
+    console.log(
+      'LTMinimumInvestment(): ',
+      ethers.utils.id('LTMinimumInvestment()')
+    )
+    console.log(
+      'GTMaximumInvestment(): ',
+      ethers.utils.id('GTMaximumInvestment()')
+    )
+    console.log('InvestmentClosed(): ', ethers.utils.id('InvestmentClosed()'))
+    console.log(
+      'InvestmentIsNotClosed(): ',
+      ethers.utils.id('InvestmentIsNotClosed()')
+    )
+    console.log(
+      'DidNotMeetDivestmentRequirements(): ',
+      ethers.utils.id('DidNotMeetDivestmentRequirements()')
+    )
+
+    console.log('SaleCompleted(): ', ethers.utils.id('SaleCompleted()'))
+    console.log('HasBeenCanceled(): ', ethers.utils.id('HasBeenCanceled()'))
+    console.log('IllegalOperation(): ', ethers.utils.id('IllegalOperation()'))
+    console.log('Locked(): ', ethers.utils.id('Locked()'))
+
+    console.log('ClaimInvestError(): ', ethers.utils.id('ClaimInvestError()'))
+    console.log('ClaimPresaleError(): ', ethers.utils.id('ClaimPresaleError()'))
+
+    console.log(
+      'NotAnAutoListingLaunchPad(): ',
+      ethers.utils.id('NotAnAutoListingLaunchPad()')
+    )
+    console.log(
+      'IsAnAutoListingLaunchPad(): ',
+      ethers.utils.id('IsAnAutoListingLaunchPad()')
+    )
+    console.log(
+      'PresaleNotCompleted(): ',
+      ethers.utils.id('PresaleNotCompleted()')
+    )
+    console.log(
+      'TransferAllowedPresaleAmount(): ',
+      ethers.utils.id('TransferAllowedPresaleAmount()')
+    )
+    console.log(
+      'TransferPresaleBalanc(): ',
+      ethers.utils.id('TransferPresaleBalanc()')
+    )
+    console.log(
+      'TransferAllowedInvestAmount(): ',
+      ethers.utils.id('TransferAllowedInvestAmount()')
+    )
+    console.log(
+      'TransferInvestBalance(): ',
+      ethers.utils.id('TransferInvestBalance()')
+    )
+    console.log(
+      'TransferLiquidityFailed(): ',
+      ethers.utils.id('TransferLiquidityFailed()')
+    )
+    console.log(
+      'TransferLiquiditySignatureVerificationFailed(): ',
+      ethers.utils.id('TransferLiquiditySignatureVerificationFailed()')
+    )
+
+    const dexRouterBytes = ethers.utils.id('DEX_ROUTER')
+    const dexRouterSetterBytes = ethers.utils.id('DEX_ROUTER_SETTER_ROLE')
+
+    console.log('dexRouterBytes: ', dexRouterBytes)
+    console.log('dexRouterSetterBytes: ', dexRouterSetterBytes)
     const signer = await ethers.getSigner(
       '0xc71aABBC653C7Bd01B68C35B8f78F82A21014471'
     )
@@ -23,6 +121,15 @@ describe('TransferLPData', function () {
       teamWallet,
       deadline,
     ])
+
+    // const wesale = await ethers.getContractAt(
+    //   'WESale',
+    //   '0x0e597Fa7b8283726d3ccf01dcfCa01D3b3802Bc8'
+    // )
+
+    // const eip = await wesale.eip712Domain()
+    // console.log(eip)
+
     console.log('LPData: ', data)
     const message = {
       domain: {
@@ -41,7 +148,8 @@ describe('TransferLPData', function () {
       data: {
         _router: routerAddress,
         _amountA: amountA,
-        _data: data,
+        _data:
+          '0x3c7356d50000000000000000000000004c7ac2e4ac328bb5162cbb45cc6beac910f4d37a000000000000000000000000000000000000000000000000bc75da0cd1ce000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000a4091e09eb027f1e5d397659bfc7d73cdddca2760000000000000000000000000000000000000000000000000000000064956cb1',
       },
     }
     const sign = await signer._signTypedData(

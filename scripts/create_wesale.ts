@@ -5,9 +5,11 @@ async function main() {
   // avax uniswap v2 router
   // const routerAddress = '0x52B2031Ea4232b68b88e1577206dc388EFcE2E49'
   const routerAddress = '0x29f7Ad37EC018a9eA97D4b3fEebc573b5635fA84'
+  const routerZeroAddress = '0x0000000000000000000000000000000000000000'
 
   // feeTod
-  const feeTo = '0xa6771e585E91C6ce7D1EeB578EDbe0696d37d962'
+  const feeTo = '0xc7816AB57762479dCF33185bad7A1cFCb68a7997'
+  const signer = '0x39AD2809F73086A63Ab2F0D8D689D1cc02579abA'
   const [owner, founder] = await ethers.getSigners()
 
   const presaleToken = await ethers.getContractAt(
@@ -19,7 +21,7 @@ async function main() {
   )
 
   const WESaleFactory = await ethers.getContractFactory('WESaleFactory')
-  const wesaleFactory = await WESaleFactory.deploy(feeTo, owner.address)
+  const wesaleFactory = await WESaleFactory.deploy(feeTo, signer)
   await wesaleFactory.deployed()
 
   console.log(`WESale deployed to ${wesaleFactory.address}`)
@@ -32,6 +34,7 @@ async function main() {
   )
   await sleep(5000)
   await wesaleFactory.grantRole(dexRouterBytes, routerAddress)
+  await wesaleFactory.grantRole(dexRouterBytes, routerZeroAddress)
   console.log(
     'complete grant router role to routerAddress: dexRouterBytes: ',
     dexRouterBytes
