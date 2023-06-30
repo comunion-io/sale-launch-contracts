@@ -35,3 +35,4 @@ error TransferLiquidityFailed();
 error TransferLiquiditySignatureVerificationFailed();
 
 error EditingIsCurrentlyNotAllowed();
+error MustAfterOld();

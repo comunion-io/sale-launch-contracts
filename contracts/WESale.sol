@@ -105,6 +105,9 @@ contract WESale is Ownable, EIP712 {
         if (_isEnded() || !_canUpdate() || _isCancel()) {
             revert EditingIsCurrentlyNotAllowed();
         }
+        if (parameters.endedAt > _endedAt) {
+            revert MustAfterOld();
+        }
         parameters.endedAt = _endedAt;
         canUpdate = false;
         emit UpdateEndedAt(_endedAt);
