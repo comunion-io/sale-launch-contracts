@@ -4,9 +4,9 @@
     "abiUrl": "/artifacts/contracts/WESaleFactory.sol/WESaleFactory.json",
     "addresses": [
       {
-        "chainId": 57000,
-        "chainName": "Rollux Testnet",
-        "address": "0xeb0900e96fcc5dfb5CE8a3EB2a138bf3ca3A0d5e"
+        "chainId": 57,
+        "chainName": "Syscoin",
+        "address": "0x7b0266DAA61d8b46Ac7e707FB7028Ee7d818Fa2b"
       }
     ]
   },
