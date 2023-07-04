@@ -4,11 +4,14 @@ import { ParametersStruct } from '../typechain-types/contracts/WESaleFactory'
 async function main() {
   // avax uniswap v2 router
   // const routerAddress = '0x52B2031Ea4232b68b88e1577206dc388EFcE2E49'
-  const routerAddress = '0x29f7Ad37EC018a9eA97D4b3fEebc573b5635fA84'
+  // Rollux Test
+  // const routerAddress = '0x29f7Ad37EC018a9eA97D4b3fEebc573b5635fA84'
+  // Rollux
+  const routerAddress = '0x0d476148769E4CF5AFFB59e5552cAC8a30D13669'
   const routerZeroAddress = '0x0000000000000000000000000000000000000000'
 
   // feeTod
-  const feeTo = '0xc7816AB57762479dCF33185bad7A1cFCb68a7997'
+  const feeTo = '0x2BEB019cF2F18824c54898308D787aD5d8f2e2Db'
   const signer = '0x39AD2809F73086A63Ab2F0D8D689D1cc02579abA'
   const [owner, founder] = await ethers.getSigners()
 

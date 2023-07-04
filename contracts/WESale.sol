@@ -259,8 +259,18 @@ contract WESale is Ownable, EIP712 {
             }
         }
         _claimInvestAmount(feeTo, _fee);
-        _claimInvestAmount(teamWallet, _investTransferTeamAmount);
-        _claimPresaleAmount(_msgSender(), returnPresaleAmount);
+        if (_isNative()) {
+            _claimInvestAmount(teamWallet, address(this).balance);
+        } else {
+            _claimInvestAmount(
+                teamWallet,
+                _investToken.balanceOf(address(this))
+            );
+        }
+        _claimPresaleAmount(
+            _msgSender(),
+            _presaleToken.balanceOf(address(this))
+        );
         unlockedAt = block.timestamp;
 
         // emit ClaimInvest(

@@ -6,6 +6,11 @@ import { ethers } from 'hardhat'
 describe('TransferLPData', function () {
   it('Should can setting new fee to', async function () {
     console.log(
+      'increaseLiquidity(bytes): ',
+      ethers.utils.id('increaseLiquidity(bytes)')
+    )
+    console.log('mint(tuple): ', ethers.utils.id('mint(tuple)'))
+    console.log(
       'InvalidToken(string _origin): ',
       ethers.utils.id('InvalidToken(string)')
     )
