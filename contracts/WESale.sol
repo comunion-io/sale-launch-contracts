@@ -218,7 +218,7 @@ contract WESale is Ownable, EIP712 {
 
         (
             uint256 _investTransferLPAmount,
-            uint256 _investTransferTeamAmount,
+            ,
             uint256 _fee
         ) = getTransferLiquidityInvestAmount();
         address feeTo = _factory.feeTo();

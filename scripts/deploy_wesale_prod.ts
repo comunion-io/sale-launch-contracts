@@ -2,8 +2,10 @@ import { ethers } from 'hardhat'
 import { ParametersStruct } from '../typechain-types/contracts/WESaleFactory'
 
 async function main() {
-  const routerAddress = '0x0d476148769E4CF5AFFB59e5552cAC8a30D13669'
-  const routerZeroAddress = '0x0000000000000000000000000000000000000000'
+  const routerAddresses = [
+    '0x29f7Ad37EC018a9eA97D4b3fEebc573b5635fA84', // rollux testnet
+    '0x0000000000000000000000000000000000000000',
+  ]
 
   // feeTod
   const feeTo = '0x2BEB019cF2F18824c54898308D787aD5d8f2e2Db'
@@ -34,12 +36,10 @@ async function main() {
     dexRouterSetterBytes
   )
   await sleep(5000)
-  await wesaleFactory.grantRole(dexRouterBytes, routerAddress)
-  await wesaleFactory.grantRole(dexRouterBytes, routerZeroAddress)
-  console.log(
-    'complete grant router role to routerAddress: dexRouterBytes: ',
-    dexRouterBytes
-  )
+  for (let routerAddress of routerAddresses) {
+    await wesaleFactory.grantRole(dexRouterBytes, routerAddress)
+    console.log('complete grant router role to', dexRouterBytes, routerAddress)
+  }
 
   await wesaleFactory.grantRole(adminBytes, ownerAddress)
   console.log(
