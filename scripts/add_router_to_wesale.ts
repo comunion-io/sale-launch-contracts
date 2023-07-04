@@ -2,54 +2,61 @@ import { ethers } from 'hardhat'
 import { ParametersStruct } from '../typechain-types/contracts/WESaleFactory'
 
 async function main() {
-  const routerAddresses = [
-    '0x4dB158Eec5c5d63F9A09535882b835f36d3fd012', // rollux testnet v3
-    '0x29f7Ad37EC018a9eA97D4b3fEebc573b5635fA84', // rollux testnet
-    '0x0000000000000000000000000000000000000000',
-  ]
+  const routerAddress = '0x4dB158Eec5c5d63F9A09535882b835f36d3fd012' // rollux v3 pegasys
+  //   const routerAddress = '0x0d476148769E4CF5AFFB59e5552cAC8a30D13669' // rollux pegasys
+  //   const routerZeroAddress = '0x0000000000000000000000000000000000000000'
 
-  // feeTod
-  const feeTo = '0x2BEB019cF2F18824c54898308D787aD5d8f2e2Db'
-  const signer = '0x39AD2809F73086A63Ab2F0D8D689D1cc02579abA'
+  //   // feeTod
+  //   const feeTo = '0xc7816AB57762479dCF33185bad7A1cFCb68a7997'
+  //   const signer = '0x39AD2809F73086A63Ab2F0D8D689D1cc02579abA'
 
-  const ownerAddress = '0xAcdC274B853e01e9666E03c662d30A83B8F73080'
+  //   const ownerAddress = '0xAcdC274B853e01e9666E03c662d30A83B8F73080'
 
-  const [owner, founder] = await ethers.getSigners()
+  //   const [owner, founder] = await ethers.getSigners()
+  //   //   console.log(owner.address, founder.address)
+  //   const presaleToken = await ethers.getContractAt(
+  //     'TestERC20',
+  //     '0x7cd80D52fD832C24D51bB842b7A8D666a9EeCE9F' // syscoin
+  //     // '0x7cd80D52fD832C24D51bB842b7A8D666a9EeCE9F' // rollux
+  //     // '0x4C7Ac2e4AC328BB5162CBB45cC6bEAC910F4d37a' // rollux testnet
+  //   )
+  //   const investToken = ethers.utils.getAddress(
+  //     '0x0000000000000000000000000000000000000000'
+  //   )
 
-  const presaleToken = await ethers.getContractAt(
-    'TestERC20',
-    '0x4C7Ac2e4AC328BB5162CBB45cC6bEAC910F4d37a'
+  const wesaleFactory = await ethers.getContractAt(
+    'WESaleFactory',
+    '0xAd7C60e00Ef9fB1d4AF6fbD82AC028927753c8C1'
   )
-  const investToken = ethers.utils.getAddress(
-    '0x0000000000000000000000000000000000000000'
-  )
-
-  const WESaleFactory = await ethers.getContractFactory('WESaleFactory')
-  const wesaleFactory = await WESaleFactory.deploy(feeTo, signer)
-  await wesaleFactory.deployed()
-  console.log(`WESale deployed to ${wesaleFactory.address}`)
-  const adminBytes = ethers.utils.id('ADMIN_ROLE')
+  //   const wesaleFactory = await WESaleFactory.deploy(feeTo, signer)
+  //   //   272198957858
+  //   //   2500000000
+  //   await wesaleFactory.deployed()
+  //   console.log(`WESale deployed to ${wesaleFactory.address}`)
+  //   const adminBytes = ethers.utils.id('ADMIN_ROLE')
   const dexRouterBytes = ethers.utils.id('DEX_ROUTER')
-  const dexRouterSetterBytes = ethers.utils.id('DEX_ROUTER_SETTER_ROLE')
-  await wesaleFactory.grantRole(dexRouterSetterBytes, owner.address)
-  console.log(
-    'complete grant routerSetter role to owner: dexRouterSetterBytes: ',
-    dexRouterSetterBytes
-  )
-  await sleep(5000)
-  for (let routerAddress of routerAddresses) {
-    await wesaleFactory.grantRole(dexRouterBytes, routerAddress)
-    console.log('complete grant router role to', dexRouterBytes, routerAddress)
-  }
+  //   const dexRouterSetterBytes = ethers.utils.id('DEX_ROUTER_SETTER_ROLE')
+  //   await wesaleFactory.grantRole(dexRouterSetterBytes, owner.address)
+  //   console.log(
+  //     'complete grant routerSetter role to owner: dexRouterSetterBytes: ',
+  //     dexRouterSetterBytes
+  //   )
+  //   await sleep(600000)
+  await wesaleFactory.grantRole(dexRouterBytes, routerAddress)
 
-  await wesaleFactory.grantRole(adminBytes, ownerAddress)
   console.log(
-    'complete grant router role to routerAddress: adminRole: ',
-    ownerAddress
+    'complete grant router role to routerAddress: dexRouterBytes: ',
+    dexRouterBytes
   )
-  await sleep(1000)
-  await wesaleFactory.transferOwnership(ownerAddress)
-  console.log('transferOwnership: ', ownerAddress)
+
+  //   await wesaleFactory.grantRole(adminBytes, ownerAddress)
+  //   console.log(
+  //     'complete grant router role to routerAddress: adminRole: ',
+  //     ownerAddress
+  //   )
+  //   await sleep(1000)
+  //   await wesaleFactory.transferOwnership(ownerAddress)
+  //   console.log('transferOwnership: ', ownerAddress)
   //   await sleep(5000)
 
   //   const startedAt = Math.floor(new Date().getTime() / 1000)
