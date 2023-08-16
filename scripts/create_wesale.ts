@@ -2,6 +2,12 @@ import { ethers } from 'hardhat'
 import { ParametersStruct } from '../typechain-types/contracts/WESaleFactory'
 
 async function main() {
+  //   const WESaleFactory1 = await ethers.getContractAt(
+  //     'WESaleFactory',
+  //     '0x8ab5971f601087e88a0c3Fd0c12AC5314a10091e'
+  //   )
+  //   console.log('WESaleFactory1.feeTo', await WESaleFactory1.feeTo())
+  //   return
   // avax uniswap v2 router
   // const routerAddress = '0x52B2031Ea4232b68b88e1577206dc388EFcE2E49'
   // Rollux Test
