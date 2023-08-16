@@ -4,9 +4,14 @@
     "abiUrl": "/artifacts/contracts/WESaleFactory.sol/WESaleFactory.json",
     "addresses": [
       {
-        "chainId": 57000,
-        "chainName": "Rollux Testnet",
-        "address": "0xAd7C60e00Ef9fB1d4AF6fbD82AC028927753c8C1"
+        "chainId": 80001,
+        "chainName": "Mumbai",
+        "address": "0x7c8e2274C94EAA0314a0f17299790dD60C04fA61"
+      },
+      {
+        "chainId": 43113,
+        "chainName": "Avax Testnet",
+        "address": "0x4395096b703c27c29dB82e228ff76Ef2FFaad350"
       }
     ]
   },
