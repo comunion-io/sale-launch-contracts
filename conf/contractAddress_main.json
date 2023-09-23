@@ -12,6 +12,16 @@
         "chainId": 570,
         "chainName": "Rollux",
         "address": "0xB411Ffc1c566dBB37c30D79Bce4E535948D355a2"
+      },
+      {
+        "chainId": 1101,
+        "chainName": "Polygon zkEVM",
+        "address": "0xB411Ffc1c566dBB37c30D79Bce4E535948D355a2"
+      },
+      {
+        "chainId": 204,
+        "chainName": "opBNB",
+        "address": "0x823b9254350b10a9151623b76ee40d885f9ECC53"
       }
     ]
   },
