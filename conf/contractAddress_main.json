@@ -1,33 +1,180 @@
 [
   {
-    "name": "WESaleFactory",
-    "abiUrl": "/artifacts/contracts/WESaleFactory.sol/WESaleFactory.json",
+    "name": "Startup",
+    "abiUrl": "/contracts/artifacts/Startup.json",
     "addresses": [
       {
-        "chainId": 57,
-        "chainName": "Syscoin",
-        "address": "0x0a07F78022bB5f0cdD34c003Ca4E9001c8471092"
+        "chainId": 1,
+        "chainName": "Ethereum",
+        "address": "0x5951a4dd023De202F6b34e92b7A0412e487dd258"
       },
       {
-        "chainId": 570,
-        "chainName": "Rollux",
-        "address": "0xB411Ffc1c566dBB37c30D79Bce4E535948D355a2"
+        "chainId": 43114,
+        "chainName": "avaxMain",
+        "address": "0x1099861d064d6C093C9D2F73602d7DAd12155073"
+      },
+      {
+        "chainId": 56,
+        "chainName": "Binance Smart Chain",
+        "address": "0xFefEab21A1CddBAda7c1077FBc1cC92e07B5ce78"
+      },
+      {
+        "chainId": 250,
+        "chainName": "Fantom",
+        "address": "0xFefEab21A1CddBAda7c1077FBc1cC92e07B5ce78"
+      },
+      {
+        "chainId": 137,
+        "chainName": "Polygon",
+        "address": "0xFefEab21A1CddBAda7c1077FBc1cC92e07B5ce78"
+      },
+      {
+        "chainId": 57,
+        "chainName": "Syscoin Mainnet",
+        "address": "0xFefEab21A1CddBAda7c1077FBc1cC92e07B5ce78"
+      },
+      {
+        "chainId": 57000,
+        "chainName": "Rollux Testnet",
+        "address": "0xB44257926FC5EFD6Df94783A8B4f011c6BF64767"
       },
       {
         "chainId": 1101,
         "chainName": "Polygon zkEVM",
-        "address": "0xB411Ffc1c566dBB37c30D79Bce4E535948D355a2"
+        "address": "0x7CB4DF5651221Ea433f7fFAE43593F8b9DE2BcD2"
       },
       {
         "chainId": 204,
         "chainName": "opBNB",
-        "address": "0x823b9254350b10a9151623b76ee40d885f9ECC53"
+        "address": "0x9079cF5475908533d5C7f5CeBdCAfbADB5CA4280"
       }
     ]
   },
   {
-    "name": "WESale",
-    "abiUrl": "/artifacts/contracts/WESale.sol/WESale.json",
+    "name": "BountyFactory",
+    "abiUrl": "/contracts/artifacts/BountyFactory.json",
+    "addresses": [
+      {
+        "chainId": 1,
+        "chainName": "Ethereum",
+        "address": "0x7B5f3fFD2018D9d0B6f1b5b0d8D3E7384d324884"
+      },
+      {
+        "chainId": 43114,
+        "chainName": "avaxMain",
+        "address": "0x5EF58fc4051d73aa461D09418ab6Dfca89cEA5ad"
+      },
+      {
+        "chainId": 56,
+        "chainName": "Binance Smart Chain",
+        "address": "0x357fa1565B94D9F7C770D30c95a405F805d95fEA"
+      },
+      {
+        "chainId": 250,
+        "chainName": "Fantom",
+        "address": "0x0c9Fe2A4D3FFDe1Ee416Ed6814F380663006E879"
+      },
+      {
+        "chainId": 137,
+        "chainName": "Polygon",
+        "address": "0x001547114664D1050271943eaC4657bE2c15EFcC"
+      },
+      {
+        "chainId": 57,
+        "chainName": "Syscoin Mainnet",
+        "address": "0xe3f80B82ef0de5b6C779f008B79FD96fA27EE6C7"
+      },
+      {
+        "chainId": 1101,
+        "chainName": "Polygon zkEVM",
+        "address": "0x3B6a47f6369e4Ab0a1c477b830dfC95f46E49f07"
+      },
+      {
+        "chainId": 204,
+        "chainName": "opBNB",
+        "address": "0x1C51aB3E344818bE11560fEf77E8C8237A2BD974"
+      }
+    ]
+  },
+  {
+    "name": "Bounty",
+    "abiUrl": "/contracts/artifacts/Bounty.json",
+    "addresses": []
+  },
+  {
+    "name": "BountyStore",
+    "abiUrl": "/contracts/artifacts/BountyStore.json",
+    "addresses": []
+  },
+  {
+    "name": "FactoryStore",
+    "abiUrl": "/contracts/artifacts/FactoryStore.json",
+    "addresses": []
+  },
+  {
+    "name": "BountyFactoryStore",
+    "abiUrl": "/contracts/artifacts/BountyFactoryStore.json",
+    "addresses": []
+  },
+  {
+    "name": "Secondary",
+    "abiUrl": "/contracts/ownership/artifacts/Secondary.json",
+    "addresses": []
+  },
+  {
+    "name": "CrowdfundingFactory",
+    "abiUrl": "/contracts/artifacts/CrowdfundingFactory.json",
+    "addresses": [
+      {
+        "chainId": 1,
+        "chainName": "Ethereum",
+        "address": "0x53EAe2DD9be90b254481Aa865063B612dd501fEF"
+      },
+      {
+        "chainId": 43114,
+        "chainName": "avaxMain",
+        "address": "0x3e94b5b6fE0C0e6bd70015C44E0887E2EB6Ea870"
+      },
+      {
+        "chainId": 56,
+        "chainName": "Binance Smart Chain",
+        "address": "0x7A9a466DE08747bC8Ad79aBA6D8dCE9D64E5C767"
+      },
+      {
+        "chainId": 250,
+        "chainName": "Fantom",
+        "address": "0x78Fef7b7C0a87D8A142936388ee64d09325CBBF0"
+      },
+      {
+        "chainId": 137,
+        "chainName": "Polygon",
+        "address": "0x7A9a466DE08747bC8Ad79aBA6D8dCE9D64E5C767"
+      },
+      {
+        "chainId": 57,
+        "chainName": "Syscoin Mainnet",
+        "address": "0x748eF6Ac94148AC23Df596Fd1a60E47D56e0C4e4"
+      },
+      {
+        "chainId": 57000,
+        "chainName": "Rollux Testnet",
+        "address": "0x2A38a4E713317887DD693e6813f606842a585a7e"
+      },
+      {
+        "chainId": 1101,
+        "chainName": "Polygon zkEVM",
+        "address": "0x6a3aE286a7b403932d4361A9F9069EaA32656065"
+      },
+      {
+        "chainId": 204,
+        "chainName": "opBNB",
+        "address": "0xF64C9A5077C4dfc660DFa55E684427e5B109FcD1"
+      }
+    ]
+  },
+  {
+    "name": "Crowdfunding",
+    "abiUrl": "/contracts/artifacts/Crowdfunding.json",
     "addresses": []
   }
 ]
