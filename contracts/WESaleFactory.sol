@@ -47,6 +47,7 @@ contract WESaleFactory is Ownable, AccessControl {
         _setRoleAdmin(DEX_ROUTER, DEX_ROUTER_SETTER_ROLE);
     }
 
+    // 创建预售
     function createSale(
         address _teamWallet,
         address _presaleToken,
@@ -128,20 +129,24 @@ contract WESaleFactory is Ownable, AccessControl {
         );
     }
 
+    // 设置手续费收集钱包
     function setFeeTo(address _feeTo) external onlyRole(ADMIN_ROLE) {
         feeTo = _feeTo;
     }
 
+    // 设置预售签名版本
     function setVersion(string memory _version) external onlyOwner {
         version = _version;
     }
 
+    // 设置签名者
     function setTransferSigner(
         address _transferSigner
     ) external onlyRole(ADMIN_ROLE) {
         transferSigner = _transferSigner;
     }
 
+    // 重写撤销角色的前置权限
     function _revokeRole(bytes32 role, address account) internal override {
         if (role == ADMIN_ROLE && account == owner()) {
             revert IllegalOperation();
