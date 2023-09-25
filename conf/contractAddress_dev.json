@@ -12,6 +12,16 @@
         "chainId": 43113,
         "chainName": "Avax Testnet",
         "address": "0x4395096b703c27c29dB82e228ff76Ef2FFaad350"
+      },
+      {
+        "chainId": 1101,
+        "chainName": "Polygon zkEVM",
+        "address": "0xBDF4D56e5ED658292fB21BAef42e33402eF5bEfb"
+      },
+      {
+        "chainId": 204,
+        "chainName": "opBNB",
+        "address": "0xBDF4D56e5ED658292fB21BAef42e33402eF5bEfb"
       }
     ]
   },
