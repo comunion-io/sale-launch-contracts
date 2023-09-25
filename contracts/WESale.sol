@@ -101,7 +101,7 @@ contract WESale is Ownable, EIP712 {
         parameters = _parameters;
     }
 
-    // 更新预售结束时间，必须大于旧结束时间
+    // Update the pre-sale end time, which must be greater than the old end time
     function updateEndedAt(uint256 _endedAt) external onlyOwner {
         if (_isEnded() || !_canUpdate() || _isCancel()) {
             revert EditingIsCurrentlyNotAllowed();
@@ -114,7 +114,7 @@ contract WESale is Ownable, EIP712 {
         emit UpdateEndedAt(_endedAt);
     }
 
-    // 投资，允许所有人在设置范围内进行投资
+    // Investment, allowing everyone to invest within the set limits
     function invest(uint256 investAmount) external payable lock {
         if (_isCancel()) {
             revert HasBeenCanceled();
@@ -159,7 +159,7 @@ contract WESale is Ownable, EIP712 {
         emit Invest(_msgSender(), investAmount, block.timestamp);
     }
 
-    // 投资人正常撤资或紧急撤资
+    // Investors’ normal or emergency withdrawal of capital
     function divest() external lock {
         if (_isFailed() || _isCancel()) {
             _divest();
@@ -172,7 +172,7 @@ contract WESale is Ownable, EIP712 {
         revert DidNotMeetDivestmentRequirements();
     }
 
-    // 发起人撤资
+    // promoter divestment
     function founderDivest() external lock onlyOwner {
         if (_isFailed()) {
             _founderDivest();
@@ -181,7 +181,7 @@ contract WESale is Ownable, EIP712 {
         revert DidNotMeetDivestmentRequirements();
     }
 
-    // 转移流动性，设置过转移流动性，并且预售成功后可以转移流动性
+    // Transfer liquidity, set the transfer liquidity, and the liquidity can be transferred after the pre-sale is successful.
     function transferLiquidity(
         uint256 _amountA,
         bytes calldata _data,
@@ -290,7 +290,7 @@ contract WESale is Ownable, EIP712 {
         );
     }
 
-    // 认领投资token，非转移流动性预售可以调用
+    // Claim the investment token and the non-transferable liquidity pre-sale can be called
     function claimInvest() external lock onlyOwner {
         if (_isCancel()) {
             revert HasBeenCanceled();
@@ -323,7 +323,7 @@ contract WESale is Ownable, EIP712 {
     //     unlockedAt = block.timestamp;
     // }
 
-    // 预售成功后投资人认领预售token，根据设置的认领规则
+    // After the pre-sale is successful, investors will claim the pre-sale token according to the set claim rules.
     function claimPresale() external lock {
         if (_isFailed() || unlockedAt == 0) {
             revert PresaleNotCompleted();
@@ -337,7 +337,7 @@ contract WESale is Ownable, EIP712 {
         }
     }
 
-    // 获取投资人可认领的预售token数量
+    // Get the number of pre-sale tokens that investors can claim
     function getCanClaimTotal() public view returns (uint256, uint256) {
         uint256 _balance = investBalances[_msgSender()];
         if (_balance == 0) {
@@ -362,12 +362,12 @@ contract WESale is Ownable, EIP712 {
         return (canClaimTotal, canClaim);
     }
 
-    // 获取已认领预售token的数量
+    // Get the number of claimed pre-sale tokens
     function getClaimedTotal() public view returns (uint256) {
         return claimed[_msgSender()];
     }
 
-    // 取消预售
+    // Cancel pre-sale
     function cancel() external lock onlyOwner {
         if (unlockedAt != 0) {
             revert SaleCompleted();
@@ -381,7 +381,7 @@ contract WESale is Ownable, EIP712 {
         emit CancelFounderReturn(_msgSender(), totalPresale, block.timestamp);
     }
 
-    // 获取可释放的token的比例
+    // Get the proportion of releasable tokens
     function getTotalReleased() public view returns (uint256) {
         if (unlockedAt == 0 || block.timestamp < unlockedAt) {
             return 0;
@@ -403,7 +403,7 @@ contract WESale is Ownable, EIP712 {
         return totalReleasePercentage;
     }
 
-    // 获取转移流动性的投资token以及预售token的数量
+    // Obtain the investment token for transferring liquidity and the number of pre-sale tokens
     function getTransferLiquidityInvestAmount()
         public
         view
@@ -422,7 +422,7 @@ contract WESale is Ownable, EIP712 {
         return (_investTransferLPAmount, _investTransferTeamAmount, _fee);
     }
 
-    // 获取交易投资token或预售token的数量
+    // Get the number of trading investment tokens or pre-sale tokens
     function getAmount(
         uint256 presaleAmount,
         uint256 investAmount
@@ -439,7 +439,7 @@ contract WESale is Ownable, EIP712 {
         return (presaleAmount, investAmount);
     }
 
-    // 获取预售投资金额
+    // Get pre-sale investment amount
     function getInvestOf(address investor) external view returns (uint256) {
         return investBalances[investor];
     }
@@ -452,7 +452,8 @@ contract WESale is Ownable, EIP712 {
     //     _presaleReserve = presaleReserve;
     //     _investReserve = investReserve;
     // }
-    // 撤资
+
+    // divestment
     function _divest() internal {
         uint256 _balance = investBalances[_msgSender()];
         if (_balance == 0) {
@@ -466,7 +467,7 @@ contract WESale is Ownable, EIP712 {
         }
     }
 
-    // 紧急撤资，扣除手续费
+    // Emergency withdrawal, deducting handling fees
     function _urgentDivest() internal {
         uint256 _balance = investBalances[_msgSender()];
         if (_balance == 0) {
@@ -485,7 +486,7 @@ contract WESale is Ownable, EIP712 {
         emit ParticipantDivest(_msgSender(), returnInvest, block.timestamp);
     }
 
-    // 发起人撤资
+    // promoter divestment
     function _founderDivest() internal {
         totalPresale = 0;
         IERC20 _presaleToken = IERC20(presaleToken);
@@ -497,7 +498,7 @@ contract WESale is Ownable, EIP712 {
         emit FounderDivest(_msgSender(), totalPresale, block.timestamp);
     }
 
-    // 认领投资token
+    // Claim investment token
     function _claimInvestAmount(address recipient, uint256 _amount) internal {
         bool success;
         if (_isNative()) {
@@ -511,7 +512,7 @@ contract WESale is Ownable, EIP712 {
         }
     }
 
-    // 认领预售token
+    // Claim pre-sale token
     function _claimPresaleAmount(address recipient, uint256 _amount) internal {
         IERC20 _presaleToken = IERC20(presaleToken);
         bool success = _presaleToken.transfer(recipient, _amount);
@@ -520,7 +521,7 @@ contract WESale is Ownable, EIP712 {
         }
     }
 
-    // 获取hash签名
+    // Get hash signature
     function getHash(
         address _router,
         uint256 _amountA,
@@ -541,7 +542,7 @@ contract WESale is Ownable, EIP712 {
             );
     }
 
-    // 验证签名
+    // Verify signature
     function _verify(
         address _signer,
         bytes32 _hash,
@@ -550,37 +551,37 @@ contract WESale is Ownable, EIP712 {
         return ECDSA.recover(_hash, _signature) == _signer;
     }
 
-    // 是否已取消
+    // Has it been cancelled?
     function _isCancel() public view returns (bool) {
         return isCancel;
     }
 
-    // 是否活跃
+    // Is it active?
     function _isLive() public view returns (bool) {
         return _isStarted() && !_isEnded();
     }
 
-    // 是否开始
+    // Whether to start
     function _isStarted() public view returns (bool) {
         return block.timestamp >= parameters.startedAt;
     }
 
-    // 是否结束
+    // Is it ended?
     function _isEnded() public view returns (bool) {
         return block.timestamp >= parameters.endedAt;
     }
 
-    // 是否是原生币作为投资token
+    // Whether it is a native currency as an investment token
     function _isNative() public view returns (bool) {
         return investToken == address(0);
     }
 
-    // 是否失败
+    // whether failed
     function _isFailed() public view returns (bool) {
         return _isEnded() && totalInvest < parameters.softCap;
     }
 
-    // 是否可更改
+    // Can it be changed?
     function _canUpdate() public view returns (bool) {
         return canUpdate;
     }
